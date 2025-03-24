@@ -170,7 +170,7 @@
         function updatePipes() {
             if (frame % 90 === 0) {
                 let top = Math.random() * 200 + 20;
-                let gap = 120;
+                let gap = 160;
                 pipes.push({ x: canvas.width, width: 40, top: top, bottom: canvas.height - top - gap });
             }
 
@@ -206,24 +206,34 @@
 
             pipes = pipes.filter(p => p.x + p.width > 0);
         }
+        let lastTime = 0;
+        const fps = 60;
+        const interval = 1000 / fps;
 
-        function gameLoop() {
+        function gameLoop(timestamp) {
             if (!gameRunning) return;
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const delta = timestamp - lastTime;
+            if (delta > interval) {
+                lastTime = timestamp - (delta % interval);
 
-            bird.velocity += gravity;
-            bird.y += bird.velocity;
+                // --- Tu lógica de juego va aquí ---
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (bird.y + bird.height > canvas.height || bird.y < 0) {
-                gameOver();
+                bird.velocity += gravity;
+                bird.y += bird.velocity;
+
+                if (bird.y + bird.height > canvas.height || bird.y < 0) {
+                    gameOver();
+                }
+
+                drawBird();
+                updatePipes();
+                drawPipes();
+
+                frame++;
             }
 
-            drawBird();
-            updatePipes();
-            drawPipes();
-
-            frame++;
             requestAnimationFrame(gameLoop);
         }
 
@@ -240,7 +250,8 @@
             startMenu.classList.add("hidden");
             scoreEl.classList.remove("hidden");
             gameRunning = true;
-            gameLoop();
+
+            requestAnimationFrame(gameLoop);
         }
 
         function showQuestion(index) {
@@ -286,7 +297,12 @@
         document.addEventListener("keydown", flap);
         canvas.addEventListener("click", flap);
 
-        //gameLoop();
+        // Ya no usar esto directamente:
+        //requestAnimationFrame(gameLoop);
+
+        // En su lugar, usa este setInterval para 60 FPS
+
+
 
     </script>
 </body>
