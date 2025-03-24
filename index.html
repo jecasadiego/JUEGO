@@ -8,9 +8,16 @@
 </head>
 
 <body>
+    <div id="startMenu">
+        <h1>Huella Voladora - Ética de la IA</h1>
+        <p>Responde correctamente las preguntas sobre Inteligencia Artificial para llegar a los 50 puntos</p>
+        <button onclick="resumeGame()">Jugar</button>
+        <p class="credits">Creado por: <strong>Juan Casadiego</strong><br>IU DIGITAL 2025</p>
+    </div>
+
     <div id="gameWrapper">
         <canvas id="gameCanvas" width="400" height="500"></canvas>
-        <div id="score">Puntaje: 0</div>
+        <div id="score" class="hidden">Puntaje: 0</div>
 
         <div id="questionBox" class="hidden">
             <h2>Pregunta de seguridad digital</h2>
@@ -34,7 +41,7 @@
 
         let bird = { x: 50, y: 150, width: 30, height: 30, velocity: 0 };
         let gravity = 0.6;
-        let jump = -6;
+        let jump = -7;
         let pipes = [];
         let frame = 0;
         let score = 0;
@@ -227,8 +234,11 @@
         function pauseGame() {
             gameRunning = false;
         }
+        const startMenu = document.getElementById("startMenu");
 
         function resumeGame() {
+            startMenu.classList.add("hidden");
+            scoreEl.classList.remove("hidden");
             gameRunning = true;
             gameLoop();
         }
@@ -275,7 +285,7 @@
 
         document.addEventListener("keydown", flap);
 
-        gameLoop();
+        //gameLoop();
 
     </script>
 </body>
@@ -292,6 +302,40 @@
         height: 100vh;
         font-family: sans-serif;
     }
+
+    #startMenu {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        background-color: #ffffffdd;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 80%;
+        max-width: 400px;
+        z-index: 10;
+    }
+
+    #startMenu h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    #startMenu button {
+        padding: 10px 25px;
+        font-size: 16px;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    .credits {
+        margin-top: 25px;
+        font-size: 14px;
+        color: #333;
+    }
+
 
     #gameWrapper {
         position: relative;
